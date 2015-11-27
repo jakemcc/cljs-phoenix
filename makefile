@@ -1,23 +1,20 @@
 
 all: clean build
 
-build:
-	java -cp 'cljs.jar:resources:src' clojure.main build.clj
+cljs-%:
+	java -cp 'cljs.jar:resources:src' clojure.main $*.clj
 
-watch:
-	java -cp cljs.jar:src clojure.main watch.clj
+build: cljs-build
 
-repl:
-	rlwrap java -cp cljs.jar:src clojure.main repl.clj
+watch: cljs-watch
 
-release:
-	java -cp cljs.jar:src clojure.main release.clj
+repl: cljs-repl
 
-node:
-	java -cp cljs.jar:src clojure.main node.clj
+release: cljs-release
 
-node-repl:
-	rlwrap java -cp cljs.jar:src clojure.main node_repl.clj
+node: cljs-node
+
+node-repl: cljs-node_repl
 
 clean:
 	rm -rf out

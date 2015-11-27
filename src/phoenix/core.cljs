@@ -2,13 +2,42 @@
   (:require [phoenix.api :as api]
             [phoenix.app :as app]))
 
-(def cmd-ctrl ["cmd" "ctrl"])
+(defn dbg
+  [x]
+  (api/alert (pr-str [x]))
+  x)
+
+(defn to-left-half []
+  (let [window (.focusedWindow js/Window)
+        screen-frame (.frameWithoutDockOrMenu (.screen window))
+        new-frame (clj->js {:x (.-x screen-frame)
+                            :y (.-y screen-frame)
+                            :width (* 0.5 (.-width screen-frame))
+                            :height (.-height screen-frame)})]
+    (.setFrame window new-frame)))
+
+(defn to-right-half []
+  (when-let [window (.focusedWindow js/Window)]
+    (let [frame (.frame window)
+          screen-frame (.frameWithoutDockOrMenu (.screen window))]
+      (.setFrame window (clj->js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
+                                  :y (.-y screen-frame)
+                                  :width (* 0.5 (.-width screen-frame))
+                                  :height (.-height screen-frame)})))))
+
+(defn to-fullscreen []
+  (when-let [window (.focusedWindow js/Window)]
+    (.setFrame window (.frameWithoutDockOrMenu (.screen window)))))
+
 
 (defn switch-app [key title]
-  (api/bind key cmd-ctrl (fn [] (app/focus-or-start title))))
+  (api/bind key ["cmd" "ctrl"] (fn [] (app/focus-or-start title))))
 
-(def bound-keys
-  [(switch-app "c" "iTerm")
+(def ^:export bound-keys
+  [(api/bind "left" ["alt" "cmd"] to-left-half)
+   (api/bind "right" ["alt" "cmd"] to-right-half)
+   (api/bind "f" ["alt" "cmd"] to-fullscreen)
+   (switch-app "c" "iTerm")
    (switch-app "e" "Emacs")
    (switch-app "b" "Google Chrome")
    (switch-app "f" "Firefox")
