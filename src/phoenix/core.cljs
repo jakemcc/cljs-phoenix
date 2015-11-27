@@ -4,17 +4,15 @@
 
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
-    (let [screen-frame (.frameWithoutDockOrMenu (.screen window))
-          new-frame (clj->js {:x (.-x screen-frame)
-                              :y (.-y screen-frame)
-                              :width (* 0.5 (.-width screen-frame))
-                              :height (.-height screen-frame)})]
-      (.setFrame window new-frame))))
+    (let [screen-frame (.frameWithoutDockOrMenu (.screen window))]
+      (.setFrame window (clj->js {:x (.-x screen-frame)
+                                  :y (.-y screen-frame)
+                                  :width (* 0.5 (.-width screen-frame))
+                                  :height (.-height screen-frame)})))))
 
 (defn to-right-half []
   (when-let [window (.focusedWindow js/Window)]
-    (let [frame (.frame window)
-          screen-frame (.frameWithoutDockOrMenu (.screen window))]
+    (let [screen-frame (.frameWithoutDockOrMenu (.screen window))]
       (.setFrame window (clj->js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                                   :y (.-y screen-frame)
                                   :width (* 0.5 (.-width screen-frame))
