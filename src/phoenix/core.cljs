@@ -1,4 +1,7 @@
 (ns phoenix.core
-  (:require [phoenix.api :as api]))
+  (:require [phoenix.api :as api]
+            [phoenix.app :as app]))
 
-(api/bind "c" ["ctrl" "cmd"] (fn [] (api/alert "Hello World!")))
+(def cmd-ctrl ["cmd" "ctrl"])
+
+(api/bind "c" cmd-ctrl (fn [] (app/focus-or-start "iTerm")))
