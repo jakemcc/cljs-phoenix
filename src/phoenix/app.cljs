@@ -15,7 +15,6 @@
         (api/alert (str "Starting " title))
         (api/launch title))
       (do
-        (api/alert (str "Switching to " title))
         (let [windows (->> apps
                            ;; could probably use all visible windows
                            (mapcat #(.allWindows %))
