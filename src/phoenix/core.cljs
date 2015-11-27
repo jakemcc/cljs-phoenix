@@ -2,11 +2,6 @@
   (:require [phoenix.api :as api]
             [phoenix.app :as app]))
 
-(defn dbg
-  [x]
-  (api/alert (pr-str [x]))
-  x)
-
 (defn to-left-half []
   (let [window (.focusedWindow js/Window)
         screen-frame (.frameWithoutDockOrMenu (.screen window))
@@ -28,7 +23,6 @@
 (defn to-fullscreen []
   (when-let [window (.focusedWindow js/Window)]
     (.setFrame window (.frameWithoutDockOrMenu (.screen window)))))
-
 
 (defn switch-app [key title]
   (api/bind key ["cmd" "ctrl"] (fn [] (app/focus-or-start title))))

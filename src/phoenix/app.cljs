@@ -19,5 +19,5 @@
                            (remove #(= 1 (.isWindowMinimized %))))]
           (if (empty? windows)
             (api/alert (str "All windows minimized for " title))
-            (do (api/alert (str "Switch to window " (.title (first windows))))
+            (do ;;(api/alert (str "Switch to window " (.title (first windows))))
                 (.focusWindow (first windows)))))))))

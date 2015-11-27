@@ -2,9 +2,6 @@
 
 (cljs.build.api/watch "src"
                       {:output-to "out/main.js"
-                       :optimizations :simple
+                       :optimizations :advanced
                        :main 'phoenix.core
-                       ;; :optimizations :advanced
-                       ;; :optimize-constants false
-                       ;; :target :nodejs
                        :externs ["phoenix-externs.js"]})
