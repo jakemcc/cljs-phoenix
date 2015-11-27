@@ -3,13 +3,13 @@
             [phoenix.app :as app]))
 
 (defn to-left-half []
-  (let [window (.focusedWindow js/Window)
-        screen-frame (.frameWithoutDockOrMenu (.screen window))
-        new-frame (clj->js {:x (.-x screen-frame)
-                            :y (.-y screen-frame)
-                            :width (* 0.5 (.-width screen-frame))
-                            :height (.-height screen-frame)})]
-    (.setFrame window new-frame)))
+  (when-let [window (.focusedWindow js/Window)]
+    (let [screen-frame (.frameWithoutDockOrMenu (.screen window))
+          new-frame (clj->js {:x (.-x screen-frame)
+                              :y (.-y screen-frame)
+                              :width (* 0.5 (.-width screen-frame))
+                              :height (.-height screen-frame)})]
+      (.setFrame window new-frame))))
 
 (defn to-right-half []
   (when-let [window (.focusedWindow js/Window)]
