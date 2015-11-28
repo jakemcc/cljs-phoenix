@@ -65,7 +65,7 @@
           old-screen-rect (.visibleFrameInRectangle (.screen window))
           new-screen-rect (.visibleFrameInRectangle screen)
           x-ratio (/ (.-width new-screen-rect) (.-width old-screen-rect))
-          y-ratio (/ (.-height new-screen-rect) (.-height new-screen-rect))]
+          y-ratio (/ (.-height new-screen-rect) (.-height old-screen-rect))]
       (.setFrame window #js {:width (round (* x-ratio (.-width window-frame)))
                              :height (round (* y-ratio (.-height window-frame)))
                              :x (+ (round (* (- (.-x window-frame) (.-x old-screen-rect))
