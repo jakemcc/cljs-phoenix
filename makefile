@@ -1,6 +1,6 @@
 all: clean build
 
-cljs-%:
+cljs-%: cljs.jar
 	java -cp 'cljs.jar:resources:src' clojure.main $*.clj
 
 build: cljs-build
@@ -14,7 +14,9 @@ release: clean cljs-release
 clean:
 	rm -rf out
 
-cljs-compiler:
+cljs.jar:
 	curl -L https://github.com/clojure/clojurescript/releases/download/r1.7.170/cljs.jar > cljs.jar
+	touch cljs.jar
+
 
 

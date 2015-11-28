@@ -32,9 +32,8 @@ ClojureScript's advanced compilation mode.
 
 ## Building
 
-1. `make cljs-compiler` - downloads `cljs.jar` to your local project
-1. `make release` - Builds `out/main.js`. This is your `~/.phoenix.js`
-   file.
+`make release` builds `out/main.js`. This is your `~/.phoenix.js`
+file.
 
 ## Developing
 
@@ -42,5 +41,3 @@ ClojureScript's advanced compilation mode.
 ClojureScript file changes. It is recommended to symlink
 `~/.phoenix.js` to this project's `out/main.js` in order to have
 Phoenix pick up configuration changes and new builds finish.
-
-
