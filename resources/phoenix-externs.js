@@ -67,7 +67,11 @@ Window.isMinimized = function() {}
 
 
 var Screen = function() {}
-Screen.frameIncludingDockAndMenu = function() {}
-Screen.frameWithoutDockOrMenu = function() {}
-Screen.nextScreen = function() {}
-Screen.previousScreen = function() {}
+Screen.frameInRectangle = function() {}
+Screen.visibleFrameInRectangle = function() {}
+Screen.mainScreen = function() {}
+Screen.next = function() {}
+Screen.previous = function() {}
+Screen.screens = function() {}
+Screen.windows = function() {}
+Screen.visibleWindows = function() {}

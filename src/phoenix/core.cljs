@@ -4,7 +4,7 @@
 
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
-    (let [screen-frame (.frameWithoutDockOrMenu (.screen window))]
+    (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window (clj->js {:x (.-x screen-frame)
                                   :y (.-y screen-frame)
                                   :width (* 0.5 (.-width screen-frame))
@@ -12,7 +12,7 @@
 
 (defn to-right-half []
   (when-let [window (.focusedWindow js/Window)]
-    (let [screen-frame (.frameWithoutDockOrMenu (.screen window))]
+    (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window (clj->js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                                   :y (.-y screen-frame)
                                   :width (* 0.5 (.-width screen-frame))
@@ -20,7 +20,7 @@
 
 (defn to-fullscreen []
   (when-let [window (.focusedWindow js/Window)]
-    (.setFrame window (.frameWithoutDockOrMenu (.screen window)))))
+    (.setFrame window (.visibleFrameInRectangle (.screen window)))))
 
 (defn switch-app [key title]
   (api/bind key ["cmd" "ctrl"] (fn [] (app/focus-or-start title))))
@@ -35,4 +35,5 @@
    (switch-app "f" "Firefox")
    (switch-app "m" "Slack")
    (switch-app "r" "Rdio")
-   (switch-app "k" "KeePassX")])
+   (switch-app "k" "KeePassX")
+   ])
