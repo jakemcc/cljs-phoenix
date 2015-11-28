@@ -30,20 +30,20 @@
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
-      (.setFrame window (clj->js {:x (.-x screen-frame)
-                                  :y (.-y screen-frame)
-                                  :width (+ (* 0.5 (.-width screen-frame))
-                                            (app-width-adjustment (.app window)))
-                                  :height (.-height screen-frame)})))))
+      (.setFrame window #js {:x (.-x screen-frame)
+                             :y (.-y screen-frame)
+                             :width (+ (* 0.5 (.-width screen-frame))
+                                       (app-width-adjustment (.app window)))
+                             :height (.-height screen-frame)}))))
 
 (defn to-right-half []
   (when-let [window (.focusedWindow js/Window)]
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
-      (.setFrame window (clj->js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
-                                  :y (.-y screen-frame)
-                                  :width (+ (* 0.5 (.-width screen-frame))
-                                            (app-width-adjustment (.app window)))
-                                  :height (.-height screen-frame)})))))
+      (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
+                             :y (.-y screen-frame)
+                             :width (+ (* 0.5 (.-width screen-frame))
+                                       (app-width-adjustment (.app window)))
+                             :height (.-height screen-frame)}))))
 
 (defn to-fullscreen []
   (when-let [window (.focusedWindow js/Window)]
@@ -58,16 +58,15 @@
           old-screen-rect (.visibleFrameInRectangle (.screen window))
           new-screen-rect (.visibleFrameInRectangle screen)
           x-ratio (/ (.-width new-screen-rect) (.-width old-screen-rect))
-          y-ratio (/ (.-height new-screen-rect) (.-height new-screen-rect))
-          new-frame {:width (round (* x-ratio (.-width window-frame)))
-                     :height (round (* y-ratio (.-height window-frame)))
-                     :x (+ (round (* (- (.-x window-frame) (.-x old-screen-rect))
-                                     x-ratio))
-                           (.-x new-screen-rect))
-                     :y (+ (round (* (- (.-y window-frame) (.-y old-screen-rect))
-                                     y-ratio))
-                           (.-y new-screen-rect))}]
-      (.setFrame window (clj->js new-frame)))))
+          y-ratio (/ (.-height new-screen-rect) (.-height new-screen-rect))]
+      (.setFrame window #js {:width (round (* x-ratio (.-width window-frame)))
+                             :height (round (* y-ratio (.-height window-frame)))
+                             :x (+ (round (* (- (.-x window-frame) (.-x old-screen-rect))
+                                             x-ratio))
+                                   (.-x new-screen-rect))
+                             :y (+ (round (* (- (.-y window-frame) (.-y old-screen-rect))
+                                             y-ratio))
+                                   (.-y new-screen-rect))}))))
 
 (defn left-one-monitor []
   (when-let [window (.focusedWindow js/Window)]
