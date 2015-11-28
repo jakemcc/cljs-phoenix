@@ -1,6 +1,5 @@
 (ns phoenix.core
-  (:require [phoenix.api :as api]
-            [clojure.string :as string]))
+  (:require [clojure.string :as string]))
 
 (defn log [& xs]
   (.log js/Phoenix (string/join " " xs)))
@@ -78,20 +77,23 @@
     (when-not (= (.screen window) (.previous (.screen window)))
       (move-to-screen window (.previous (.screen window))))))
 
-(defn switch-app [key name]
-  (api/bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
+(defn bind [key modifiers callback]
+  (.bind js/Phoenix key (clj->js modifiers) callback))
 
+(defn switch-app [key name]
+  (bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
+ 
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
 (def ^:export bound-keys
-  [(api/bind "h" ["alt" "cmd" "ctrl"] debug)
+  [(bind "h" ["alt" "cmd" "ctrl"] debug)
 
-   (api/bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
-   (api/bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
+   (bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
+   (bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
 
-   (api/bind "left" ["alt" "cmd"] to-left-half)
-   (api/bind "right" ["alt" "cmd"] to-right-half)
-   (api/bind "f" ["alt" "cmd"] to-fullscreen)
+   (bind "left" ["alt" "cmd"] to-left-half)
+   (bind "right" ["alt" "cmd"] to-right-half)
+   (bind "f" ["alt" "cmd"] to-fullscreen)
 
    (switch-app "c" "iTerm")
    (switch-app "e" "Emacs")
