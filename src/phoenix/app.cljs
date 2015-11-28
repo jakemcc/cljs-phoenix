@@ -17,4 +17,5 @@
             (.focus (first windows))))))
     (do
       (api/notify (str "Starting " title))
-      (.launch js/App title))))
+      (when-let [app (.launch js/App title)]
+        (.focus (.mainWindow app))))))
