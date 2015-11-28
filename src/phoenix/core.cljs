@@ -31,13 +31,17 @@
           [(.name app) screen-width]
           0))
 
+(defn half-screen-width
+  [window screen-frame]
+  (+ (* 0.5 (.-width screen-frame))
+     (app-width-adjustment (.app window) (.-width screen-frame))))
+
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window #js {:x (.-x screen-frame)
                              :y (.-y screen-frame)
-                             :width (+ (* 0.5 (.-width screen-frame))
-                                       (app-width-adjustment (.app window) (.-width screen-frame)))
+                             :width (half-screen-width window screen-frame)
                              :height (.-height screen-frame)}))))
 
 (defn to-right-half []
@@ -45,8 +49,7 @@
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                              :y (.-y screen-frame)
-                             :width (+ (* 0.5 (.-width screen-frame))
-                                       (app-width-adjustment (.app window) (.-width screen-frame)))
+                             :width (half-screen-width window screen-frame)
                              :height (.-height screen-frame)}))))
 
 (defn to-fullscreen []
