@@ -12,11 +12,12 @@
        "x:" (.-x rectangle)
        "y:" (.-y rectangle)
        "width:" (.-width rectangle)
+       "half-width:" (/ (.-width rectangle) 2.0)
        "height:" (.-height rectangle)))
 
 (defn debug []
   (log "debug")
-  (log-rectangle "Screen's visible frame" (.visibleFrameInRectangle (.mainScreen js/Screen)))
+  (log-rectangle "Screen's visible frame" (.visibleFrameInRectangle (.screen (.focusedWindow js/Window))))
   (log-rectangle "App's frame" (.frame (.focusedWindow js/Window))))
 
 (defn dbg [x]
@@ -24,11 +25,11 @@
   x)
 
 (defn app-width-adjustment
-  [app]
-  (get {"iTerm" 8
-        "Emacs" -4}
-       (.name app)
-       0))
+  [app screen-width]
+  (get-in {"iTerm" {1440 8}
+           "Emacs" {1440 -4}}
+          [(.name app) screen-width]
+          0))
 
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
@@ -36,7 +37,7 @@
       (.setFrame window #js {:x (.-x screen-frame)
                              :y (.-y screen-frame)
                              :width (+ (* 0.5 (.-width screen-frame))
-                                       (app-width-adjustment (.app window)))
+                                       (app-width-adjustment (.app window) (.-width screen-frame)))
                              :height (.-height screen-frame)}))))
 
 (defn to-right-half []
@@ -45,7 +46,7 @@
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                              :y (.-y screen-frame)
                              :width (+ (* 0.5 (.-width screen-frame))
-                                       (app-width-adjustment (.app window)))
+                                       (app-width-adjustment (.app window) (.-width screen-frame)))
                              :height (.-height screen-frame)}))))
 
 (defn to-fullscreen []
@@ -83,7 +84,7 @@
 
 (defn switch-app [key name]
   (bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
- 
+
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
 (def ^:export bound-keys
