@@ -25,6 +25,8 @@
 (defn switch-app [key title]
   (api/bind key ["cmd" "ctrl"] (fn [] (app/focus-or-start title))))
 
+;; Per Phoenix docs, need to capture results of
+;; Phoenix.bind to GC doesn't clean them up.
 (def ^:export bound-keys
   [(api/bind "left" ["alt" "cmd"] to-left-half)
    (api/bind "right" ["alt" "cmd"] to-right-half)
@@ -35,5 +37,4 @@
    (switch-app "f" "Firefox")
    (switch-app "m" "Slack")
    (switch-app "r" "Rdio")
-   (switch-app "k" "KeePassX")
-   ])
+   (switch-app "k" "KeePassX")])
