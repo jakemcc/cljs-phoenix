@@ -1,6 +1,9 @@
 (ns phoenix.core
   (:require [clojure.string :as string]))
 
+(defn bind [key modifiers callback]
+  (.bind js/Phoenix key (clj->js modifiers) callback))
+
 (defn log [& xs]
   (.log js/Phoenix (string/join " " xs)))
 
@@ -20,7 +23,8 @@
   (log x)
   x)
 
-(defn app-width-adjustment [app]
+(defn app-width-adjustment
+  [app]
   (get {"iTerm" 8
         "Emacs" -4}
        (.name app)
@@ -76,9 +80,6 @@
   (when-let [window (.focusedWindow js/Window)]
     (when-not (= (.screen window) (.previous (.screen window)))
       (move-to-screen window (.previous (.screen window))))))
-
-(defn bind [key modifiers callback]
-  (.bind js/Phoenix key (clj->js modifiers) callback))
 
 (defn switch-app [key name]
   (bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
