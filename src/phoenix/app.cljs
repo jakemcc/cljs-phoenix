@@ -18,4 +18,4 @@
     (do
       (api/notify (str "Starting " title))
       (when-let [app (.launch js/App title)]
-        (.focus (.mainWindow app))))))
+        (.focus app)))))
