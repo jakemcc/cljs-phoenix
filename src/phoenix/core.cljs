@@ -1,7 +1,20 @@
 (ns phoenix.core
   (:require [phoenix.api :as api]
-            [phoenix.app :as app]
             [clojure.string :as string]))
+
+(defn log [& xs]
+  (.log js/Phoenix (string/join " " xs)))
+
+(defn log-rectangle [prefix rectangle]
+  (log prefix
+       "x:" (.-x rectangle)
+       "y:" (.-y rectangle)
+       "width:" (.-width rectangle)
+       "height:" (.-height rectangle)))
+
+(defn dbg [x]
+  (log x)
+  x)
 
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
@@ -23,11 +36,8 @@
   (when-let [window (.focusedWindow js/Window)]
     (.setFrame window (.visibleFrameInRectangle (.screen window)))))
 
-(defn switch-app [key title]
-  (api/bind key ["cmd" "ctrl"] (fn [] (app/focus-or-start title))))
-
-(defn log [& xs]
-  (.log js/Phoenix (string/join " " xs)))
+(defn switch-app [key name]
+  (api/bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
 
 (def round js/Math.round)
 
