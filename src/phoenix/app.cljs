@@ -2,11 +2,12 @@
   (:require [phoenix.api :as api]))
 
 (defn all-with-title [title]
-  (filter (fn [app]
-            ;; (api/log (str "Trying " (.name app)))
-            (= title (.name app)))
+  (filter (fn [app] (= title (.name app)))
           (.runningApps js/App)))
 
+
+;; Idea:
+;;   search visible windows first, then do minimized windows
 (defn focus-or-start [title]
   (let [apps (all-with-title title)]
     (if (empty? apps)
