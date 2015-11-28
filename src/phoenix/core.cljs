@@ -16,12 +16,19 @@
   (log x)
   x)
 
+(defn app-width-adjustment [app]
+  (get {"iTerm" 8
+        "Emacs" -4}
+       (.name app)
+       0))
+
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window (clj->js {:x (.-x screen-frame)
                                   :y (.-y screen-frame)
-                                  :width (* 0.5 (.-width screen-frame))
+                                  :width (+ (* 0.5 (.-width screen-frame))
+                                            (app-width-adjustment (.app window)))
                                   :height (.-height screen-frame)})))))
 
 (defn to-right-half []
@@ -29,7 +36,8 @@
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window (clj->js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                                   :y (.-y screen-frame)
-                                  :width (* 0.5 (.-width screen-frame))
+                                  :width (+ (* 0.5 (.-width screen-frame))
+                                            (app-width-adjustment (.app window)))
                                   :height (.-height screen-frame)})))))
 
 (defn to-fullscreen []
@@ -68,10 +76,17 @@
     (when-not (= (.screen window) (.previous (.screen window)))
       (move-to-screen window (.previous (.screen window))))))
 
+(defn debug []
+  (log "debug")
+  (log-rectangle "visible frame" (.visibleFrameInRectangle (.mainScreen js/Screen)))
+  (log-rectangle "window" (.frame (.focusedWindow js/Window))))
+
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
 (def ^:export bound-keys
-  [(api/bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
+  [(api/bind "h" ["alt" "cmd" "ctrl"] debug)
+
+   (api/bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
    (api/bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
 
    (api/bind "left" ["alt" "cmd"] to-left-half)
