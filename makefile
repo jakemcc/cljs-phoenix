@@ -7,8 +7,6 @@ build: cljs-build
 
 watch: cljs-watch
 
-repl: cljs-repl
-
 release: clean cljs-release
 
 clean:
