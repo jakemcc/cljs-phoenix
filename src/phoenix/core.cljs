@@ -12,6 +12,11 @@
        "width:" (.-width rectangle)
        "height:" (.-height rectangle)))
 
+(defn debug []
+  (log "debug")
+  (log-rectangle "Screen's visible frame" (.visibleFrameInRectangle (.mainScreen js/Screen)))
+  (log-rectangle "App's frame" (.frame (.focusedWindow js/Window))))
+
 (defn dbg [x]
   (log x)
   x)
@@ -44,8 +49,6 @@
   (when-let [window (.focusedWindow js/Window)]
     (.setFrame window (.visibleFrameInRectangle (.screen window)))))
 
-(defn switch-app [key name]
-  (api/bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
 
 (def round js/Math.round)
 
@@ -76,10 +79,8 @@
     (when-not (= (.screen window) (.previous (.screen window)))
       (move-to-screen window (.previous (.screen window))))))
 
-(defn debug []
-  (log "debug")
-  (log-rectangle "visible frame" (.visibleFrameInRectangle (.mainScreen js/Screen)))
-  (log-rectangle "window" (.frame (.focusedWindow js/Window))))
+(defn switch-app [key name]
+  (api/bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
 
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
