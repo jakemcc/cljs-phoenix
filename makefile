@@ -12,10 +12,6 @@ repl: cljs-repl
 
 release: cljs-release
 
-node: cljs-node
-
-node-repl: cljs-node_repl
-
 clean:
 	rm -rf out
 
