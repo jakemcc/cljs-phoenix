@@ -1,27 +1,39 @@
-var api = function() {}
-api.bind = function(key, combo, action) {}
-api.alert = function(message) {}
+var Phoenix = function() {}
+// static
+Phoenix.reload = function() {}
+Phoenix.bind = function(key, modifiers, callback) {}
+Phoenix.on = function(event, callback) {}
+Phoenix.log = function(message) {}
+Phoenix.notify = function(message) {}
 
 var App = function() {}
+//static
+App.launch = function(appName) {}
+App.focusedApp = function() {}
 App.runningApps = function() {}
-App.allWindows = function() {}
-App.visibleWindows = function() {}
-App.title = function() {}
+
+App.processIdentifier = function() {}
 App.bundleIdentifier = function() {}
+App.name = function() {}
+App.isActive = function() {}
 App.isHidden = function() {}
+App.isTerminated = function() {}
+App.mainWindow = function() {}
+App.windows = function() {}
+App.visibleWindows = function() {}
+App.activate = function() {}
+App.focus = function() {}
 App.show = function() {}
 App.hide = function() {}
-App.activate = function() {}
-App.pid = function() {}
-App.kill = function() {}
-App.kill9 = function() {}
+App.terminate = function() {}
+App.forceTerminate = function() {}
 
 var Window = function() {}
 // static
-Window.allWindows = function() {}
+Window.windows = function() {}
 Window.visibleWindows = function() {}
 Window.focusedWindow = function() {}
-Window.visibleWindowsMostRecentFirst = function() {}
+Window.visibleWindowsInOrder = function() {}
 Window.otherWindowsOnSameScreen = function() {}
 Window.otherWindowsOnAllScreens = function() {}
 
@@ -37,21 +49,21 @@ Window.setTopLeft = function(point) {}
 Window.setSize = function(size) {}
 Window.maximize = function() {}
 Window.minimize = function() {}
-Window.unMinimize = function() {}
+Window.unminimize = function() {}
 Window.screen = function() {}
 Window.app = function() {}
-Window.isNormalWindow = function() {}
-Window.focusWindow = function() {}
-Window.focusWindowLeft = function() {}
-Window.focusWindowRight = function() {}
-Window.focusWindowUp = function() {}
-Window.focusWindowDown = function() {}
+Window.isNormal = function() {}
+Window.focus = function() {}
+Window.focusClosestWindowInLeft = function() {}
+Window.focusClosestWindowInRight = function() {}
+Window.focusClosestWindowInUp = function() {}
+Window.focusClosestWindowInDown = function() {}
 Window.windowsToWest = function() {}
 Window.windowsToEast = function() {}
 Window.windowsToNorth = function() {}
 Window.windowsToSouth = function() {}
 Window.title = function() {}
-Window.isWindowMinimized = function() {}
+Window.isMinimized = function() {}
 
 
 var Screen = function() {}
@@ -59,4 +71,3 @@ Screen.frameIncludingDockAndMenu = function() {}
 Screen.frameWithoutDockOrMenu = function() {}
 Screen.nextScreen = function() {}
 Screen.previousScreen = function() {}
-
