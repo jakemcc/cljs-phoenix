@@ -1,4 +1,3 @@
-
 all: clean build
 
 cljs-%:
@@ -10,7 +9,7 @@ watch: cljs-watch
 
 repl: cljs-repl
 
-release: cljs-release
+release: clean cljs-release
 
 clean:
 	rm -rf out
