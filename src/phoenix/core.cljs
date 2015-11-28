@@ -31,6 +31,7 @@
   [(api/bind "left" ["alt" "cmd"] to-left-half)
    (api/bind "right" ["alt" "cmd"] to-right-half)
    (api/bind "f" ["alt" "cmd"] to-fullscreen)
+   
    (switch-app "c" "iTerm")
    (switch-app "e" "Emacs")
    (switch-app "b" "Google Chrome")
