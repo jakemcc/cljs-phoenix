@@ -13,8 +13,7 @@
                          (remove #(= 1 (.isMinimized %))))]
         (if (empty? windows)
           (api/notify (str "All windows minimized for " title))
-          (do ;;(api/log (str "Switch to window " (.title (first windows))))
-            (.focus (first windows))))))
+          (.focus (first windows)))))
     (do
       (api/notify (str "Starting " title))
       (when-let [app (.launch js/App title)]
