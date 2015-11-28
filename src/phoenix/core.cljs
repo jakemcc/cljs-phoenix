@@ -1,6 +1,7 @@
 (ns phoenix.core
   (:require [phoenix.api :as api]
-            [phoenix.app :as app]))
+            [phoenix.app :as app]
+            [clojure.string :as string]))
 
 (defn to-left-half []
   (when-let [window (.focusedWindow js/Window)]
@@ -25,13 +26,48 @@
 (defn switch-app [key title]
   (api/bind key ["cmd" "ctrl"] (fn [] (app/focus-or-start title))))
 
+(defn log [& xs]
+  (.log js/Phoenix (string/join " " xs)))
+
+(def round js/Math.round)
+
+(defn move-to-screen [window screen]
+  (when (and window screen)
+    (let [window-frame (.frame window)
+          old-screen-rect (.visibleFrameInRectangle (.screen window))
+          new-screen-rect (.visibleFrameInRectangle screen)
+          x-ratio (/ (.-width new-screen-rect) (.-width old-screen-rect))
+          y-ratio (/ (.-height new-screen-rect) (.-height new-screen-rect))
+          new-frame {:width (round (* x-ratio (.-width window-frame)))
+                     :height (round (* y-ratio (.-height window-frame)))
+                     :x (+ (round (* (- (.-x window-frame) (.-x old-screen-rect))
+                                     x-ratio))
+                           (.-x new-screen-rect))
+                     :y (+ (round (* (- (.-y window-frame) (.-y old-screen-rect))
+                                     y-ratio))
+                           (.-y new-screen-rect))}]
+      (.setFrame window (clj->js new-frame)))))
+
+(defn left-one-monitor []
+  (when-let [window (.focusedWindow js/Window)]
+    (when-not (= (.screen window) (.next (.screen window)))
+      (move-to-screen window (.next (.screen window))))))
+
+(defn right-one-monitor []
+  (when-let [window (.focusedWindow js/Window)]
+    (when-not (= (.screen window) (.previous (.screen window)))
+      (move-to-screen window (.previous (.screen window))))))
+
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
 (def ^:export bound-keys
-  [(api/bind "left" ["alt" "cmd"] to-left-half)
+  [(api/bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
+   (api/bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
+
+   (api/bind "left" ["alt" "cmd"] to-left-half)
    (api/bind "right" ["alt" "cmd"] to-right-half)
    (api/bind "f" ["alt" "cmd"] to-fullscreen)
-   
+
    (switch-app "c" "iTerm")
    (switch-app "e" "Emacs")
    (switch-app "b" "Google Chrome")
