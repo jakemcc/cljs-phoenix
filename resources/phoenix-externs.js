@@ -75,3 +75,13 @@ Screen.previous = function() {}
 Screen.screens = function() {}
 Screen.windows = function() {}
 Screen.visibleWindows = function() {}
+
+var Model = function() {}
+// properties
+Model.origin = function() {}
+Model.duration = function() {}
+Model.message = function() {}
+
+Model.frame = function() {}
+Model.show = function() {}
+Model.close = function() {}

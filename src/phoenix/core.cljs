@@ -24,6 +24,15 @@
   (log x)
   x)
 
+(defn alert [& xs]
+  (let [modal (js/Modal.)
+        main-screen-rect (.visibleFrameInRectangle (.mainScreen js/Screen))]
+    (set! (.-origin modal) #js {:x (/ (.-width main-screen-rect) 2)
+                                :y (/ (.-height main-screen-rect) 2)})
+    (set! (.-message modal) (string/join " " xs))
+    (set! (.-duration modal) 2)
+    (.show modal)))
+
 (defn app-width-adjustment
   [app screen-width]
   (get-in {"iTerm" {1440 8}
@@ -86,7 +95,12 @@
       (move-to-screen window (.previous (.screen window))))))
 
 (defn switch-app [key name]
-  (bind key ["cmd" "ctrl"] (fn [] (.focus (.launch js/App name)))))
+  (bind key ["cmd" "ctrl"] (fn []
+                             (if-let [app (.get js/App name)]
+                               (.focus app)
+                               (do
+                                 (alert "Starting" name)
+                                 (.focus (.launch js/App name)))))))
 
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
