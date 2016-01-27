@@ -61,6 +61,14 @@
                              :width (half-screen-width window screen-frame)
                              :height (.-height screen-frame)}))))
 
+(defn to-middle []
+  (when-let [window (.focusedWindow js/Window)]
+    (let [screen-frame (.visibleFrameInRectangle (.screen window))]
+      (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.25 (.-width screen-frame)))
+                             :y (.-y screen-frame)
+                             :width (half-screen-width window screen-frame)
+                             :height (.-height screen-frame)}))))
+
 (defn to-fullscreen []
   (when-let [window (.focusedWindow js/Window)]
     (.setFrame window (.visibleFrameInRectangle (.screen window)))))
@@ -113,6 +121,7 @@
    (bind "left" ["alt" "cmd"] to-left-half)
    (bind "right" ["alt" "cmd"] to-right-half)
    (bind "f" ["alt" "cmd"] to-fullscreen)
+   (bind "down" ["alt" "cmd"] to-middle)
 
    (switch-app "c" "iTerm")
    (switch-app "e" "Emacs")
