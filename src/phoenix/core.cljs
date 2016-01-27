@@ -119,5 +119,4 @@
    (switch-app "b" "Google Chrome")
    (switch-app "f" "Firefox")
    (switch-app "m" "Slack")
-   (switch-app "r" "Rdio")
    (switch-app "k" "KeePassX")])
