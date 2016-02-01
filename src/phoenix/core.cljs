@@ -7,6 +7,9 @@
 (defn log [& xs]
   (.log js/Phoenix (string/join " " xs)))
 
+(defn notify [^String message]
+  (.notify js/Phoenix message))
+
 (defn log-rectangle [prefix rectangle]
   (log prefix
        "x:" (.-x rectangle)
@@ -102,13 +105,32 @@
     (when-not (= (.screen window) (.previous (.screen window)))
       (move-to-screen window (.previous (.screen window))))))
 
-(defn switch-app [key name]
-  (bind key ["cmd" "ctrl"] (fn []
-                             (if-let [app (.get js/App name)]
-                               (.focus app)
-                               (do
-                                 (alert "Starting" name)
-                                 (.focus (.launch js/App name)))))))
+(def last-recently-launched-app (atom nil))
+
+;; Idea:
+;;   search visible windows first, then do minimized windows
+;; Below no longer cycles through all the windows. Previous
+;;   implementation focused on every window and stayed on last
+;;   focused. Now it just focuses on first one returned.
+(defn focus-or-start [title]
+  (if-let [app (.get js/App title)]
+    (do
+      (let [windows (->> (.windows app)
+                         (remove #(= 1 (.isMinimized %))))]
+        (if (empty? windows)
+          (notify (str "All windows minimized for " title))
+          (.focus (first windows)))))
+    (when-let [app (.launch js/App title)]
+      (reset! last-recently-launched-app title)
+      (.focus app))))
+
+(def ^:export app-did-launch
+  (js/Phoenix.on "appDidLaunch" (fn [app]
+                                  (when (= @last-recently-launched-app (.name app))
+                                    (.focus app)
+                                    (reset! last-recently-launched-app nil)))))
+(defn switch-app [key title]
+  (bind key ["cmd" "ctrl"] (partial focus-or-start title)))
 
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
