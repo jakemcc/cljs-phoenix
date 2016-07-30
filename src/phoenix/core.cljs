@@ -149,5 +149,6 @@
    (switch-app "e" "Emacs")
    (switch-app "b" "Google Chrome")
    (switch-app "f" "Firefox")
+   (switch-app "v" "Vivaldi")
    (switch-app "m" "Slack")
    (switch-app "k" "KeePassX")])
