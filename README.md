@@ -28,7 +28,7 @@ ClojureScript's advanced compilation mode.
 ## Requirements
 
 - Java 8 is installed on your machine.
-- You're using Phoenix 2.0.
+- You're using Phoenix 2.2+.
 
 ## Building
 
