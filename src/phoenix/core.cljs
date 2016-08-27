@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]))
 
 (defn bind [key modifiers callback]
-  (.bind js/Phoenix key (clj->js modifiers) callback))
+  (js/Key. key (clj->js modifiers) callback))
 
 (defn log [& xs]
   (.log js/Phoenix (string/join " " xs)))
@@ -20,8 +20,8 @@
 
 (defn debug []
   (log "debug")
-  (log-rectangle "Screen's visible frame" (.visibleFrameInRectangle (.screen (.focusedWindow js/Window))))
-  (log-rectangle "App's frame" (.frame (.focusedWindow js/Window))))
+  (log-rectangle "Screen's visible frame" (.visibleFrameInRectangle (.screen (.focused js/Window))))
+  (log-rectangle "App's frame" (.frame (.focused js/Window))))
 
 (defn dbg [x]
   (log x)
@@ -29,7 +29,7 @@
 
 (defn alert [& xs]
   (let [modal (js/Modal.)
-        main-screen-rect (.visibleFrameInRectangle (.mainScreen js/Screen))]
+        main-screen-rect (.visibleFrameInRectangle (.main js/Screen))]
     (set! (.-origin modal) #js {:x (/ (.-width main-screen-rect) 2)
                                 :y (/ (.-height main-screen-rect) 2)})
     (set! (.-message modal) (string/join " " xs))
@@ -49,7 +49,7 @@
      (app-width-adjustment (.app window) (.-width screen-frame))))
 
 (defn to-left-half []
-  (when-let [window (.focusedWindow js/Window)]
+  (when-let [window (.focused js/Window)]
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window #js {:x (.-x screen-frame)
                              :y (.-y screen-frame)
@@ -57,7 +57,7 @@
                              :height (.-height screen-frame)}))))
 
 (defn to-right-half []
-  (when-let [window (.focusedWindow js/Window)]
+  (when-let [window (.focused js/Window)]
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                              :y (.-y screen-frame)
@@ -65,7 +65,7 @@
                              :height (.-height screen-frame)}))))
 
 (defn to-middle []
-  (when-let [window (.focusedWindow js/Window)]
+  (when-let [window (.focused js/Window)]
     (let [screen-frame (.visibleFrameInRectangle (.screen window))]
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.25 (.-width screen-frame)))
                              :y (.-y screen-frame)
@@ -73,7 +73,7 @@
                              :height (.-height screen-frame)}))))
 
 (defn to-fullscreen []
-  (when-let [window (.focusedWindow js/Window)]
+  (when-let [window (.focused js/Window)]
     (.setFrame window (.visibleFrameInRectangle (.screen window)))))
 
 
@@ -96,12 +96,12 @@
                                    (.-y new-screen-rect))}))))
 
 (defn left-one-monitor []
-  (when-let [window (.focusedWindow js/Window)]
+  (when-let [window (.focused js/Window)]
     (when-not (= (.screen window) (.next (.screen window)))
       (move-to-screen window (.next (.screen window))))))
 
 (defn right-one-monitor []
-  (when-let [window (.focusedWindow js/Window)]
+  (when-let [window (.focused js/Window)]
     (when-not (= (.screen window) (.previous (.screen window)))
       (move-to-screen window (.previous (.screen window))))))
 
@@ -115,6 +115,7 @@
 (defn focus-or-start [title]
   (if-let [app (.get js/App title)]
     (do
+      ;; TODO: could probably switch this to visible windows?
       (let [windows (->> (.windows app)
                          (remove #(= 1 (.isMinimized %))))]
         (if (empty? windows)
@@ -125,10 +126,10 @@
       (.focus app))))
 
 (def ^:export app-did-launch
-  (js/Phoenix.on "appDidLaunch" (fn [app]
-                                  (when (= @last-recently-launched-app (.name app))
-                                    (.focus app)
-                                    (reset! last-recently-launched-app nil)))))
+  (js/Event. "appDidLaunch" (fn [app]
+                              (when (= @last-recently-launched-app (.name app))
+                                (.focus app)
+                                (reset! last-recently-launched-app nil)))))
 (defn switch-app [key title]
   (bind key ["cmd" "ctrl"] (partial focus-or-start title)))
 

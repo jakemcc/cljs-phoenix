@@ -9,8 +9,8 @@ Phoenix.notify = function(message) {}
 var App = function() {}
 //static
 App.launch = function(appName) {}
-App.focusedApp = function() {}
-App.runningApps = function() {}
+App.focused = function() {}
+App.all = function() {}
 
 App.processIdentifier = function() {}
 App.bundleIdentifier = function() {}
@@ -20,22 +20,18 @@ App.isHidden = function() {}
 App.isTerminated = function() {}
 App.mainWindow = function() {}
 App.windows = function() {}
-App.visibleWindows = function() {}
 App.activate = function() {}
 App.focus = function() {}
 App.show = function() {}
 App.hide = function() {}
 App.terminate = function() {}
-App.forceTerminate = function() {}
 
 var Window = function() {}
 // static
-Window.windows = function() {}
-Window.visibleWindows = function() {}
-Window.focusedWindow = function() {}
-Window.visibleWindowsInOrder = function() {}
-Window.otherWindowsOnSameScreen = function() {}
-Window.otherWindowsOnAllScreens = function() {}
+Window.all = function() {}
+Window.focused = function() {}
+Window.recent = function() {}
+Window.others = function() {}
 
 // Members
 Window.frame = function() {}
@@ -54,14 +50,8 @@ Window.screen = function() {}
 Window.app = function() {}
 Window.isNormal = function() {}
 Window.focus = function() {}
-Window.focusClosestWindowInLeft = function() {}
-Window.focusClosestWindowInRight = function() {}
-Window.focusClosestWindowInUp = function() {}
-Window.focusClosestWindowInDown = function() {}
-Window.windowsToWest = function() {}
-Window.windowsToEast = function() {}
-Window.windowsToNorth = function() {}
-Window.windowsToSouth = function() {}
+Window.focusClosestNeighbor = function() {}
+Window.neighbors = function() {}
 Window.title = function() {}
 Window.isMinimized = function() {}
 
@@ -69,12 +59,11 @@ Window.isMinimized = function() {}
 var Screen = function() {}
 Screen.frameInRectangle = function() {}
 Screen.visibleFrameInRectangle = function() {}
-Screen.mainScreen = function() {}
+Screen.main = function() {}
 Screen.next = function() {}
 Screen.previous = function() {}
-Screen.screens = function() {}
+Screen.all = function() {}
 Screen.windows = function() {}
-Screen.visibleWindows = function() {}
 
 var Model = function() {}
 // properties
@@ -85,3 +74,5 @@ Model.message = function() {}
 Model.frame = function() {}
 Model.show = function() {}
 Model.close = function() {}
+
+var Key = function() {}
