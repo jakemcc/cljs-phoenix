@@ -58,7 +58,7 @@ Window.isMinimized = function() {}
 
 var Screen = function() {}
 Screen.frameInRectangle = function() {}
-Screen.visibleFrameInRectangle = function() {}
+Screen.flippedVisibleFrame = function() {}
 Screen.main = function() {}
 Screen.next = function() {}
 Screen.previous = function() {}

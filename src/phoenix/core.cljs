@@ -20,7 +20,7 @@
 
 (defn debug []
   (log "debug")
-  (log-rectangle "Screen's visible frame" (.visibleFrameInRectangle (.screen (.focused js/Window))))
+  (log-rectangle "Screen's visible frame" (.flippedVisibleFrame (.screen (.focused js/Window))))
   (log-rectangle "App's frame" (.frame (.focused js/Window))))
 
 (defn dbg [x]
@@ -29,7 +29,7 @@
 
 (defn alert [& xs]
   (let [modal (js/Modal.)
-        main-screen-rect (.visibleFrameInRectangle (.main js/Screen))]
+        main-screen-rect (.flippedVisibleFrame (.main js/Screen))]
     (set! (.-origin modal) #js {:x (/ (.-width main-screen-rect) 2)
                                 :y (/ (.-height main-screen-rect) 2)})
     (set! (.-message modal) (string/join " " xs))
@@ -50,7 +50,7 @@
 
 (defn to-left-half []
   (when-let [window (.focused js/Window)]
-    (let [screen-frame (.visibleFrameInRectangle (.screen window))]
+    (let [screen-frame (.flippedVisibleFrame (.screen window))]
       (.setFrame window #js {:x (.-x screen-frame)
                              :y (.-y screen-frame)
                              :width (half-screen-width window screen-frame)
@@ -58,7 +58,7 @@
 
 (defn to-right-half []
   (when-let [window (.focused js/Window)]
-    (let [screen-frame (.visibleFrameInRectangle (.screen window))]
+    (let [screen-frame (.flippedVisibleFrame (.screen window))]
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                              :y (.-y screen-frame)
                              :width (half-screen-width window screen-frame)
@@ -66,7 +66,7 @@
 
 (defn to-middle []
   (when-let [window (.focused js/Window)]
-    (let [screen-frame (.visibleFrameInRectangle (.screen window))]
+    (let [screen-frame (.flippedVisibleFrame (.screen window))]
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.25 (.-width screen-frame)))
                              :y (.-y screen-frame)
                              :width (half-screen-width window screen-frame)
@@ -74,7 +74,7 @@
 
 (defn to-fullscreen []
   (when-let [window (.focused js/Window)]
-    (.setFrame window (.visibleFrameInRectangle (.screen window)))))
+    (.setFrame window (.flippedVisibleFrame (.screen window)))))
 
 
 (def round js/Math.round)
@@ -82,8 +82,8 @@
 (defn move-to-screen [window screen]
   (when (and window screen)
     (let [window-frame (.frame window)
-          old-screen-rect (.visibleFrameInRectangle (.screen window))
-          new-screen-rect (.visibleFrameInRectangle screen)
+          old-screen-rect (.flippedVisibleFrame (.screen window))
+          new-screen-rect (.flippedVisibleFrame screen)
           x-ratio (/ (.-width new-screen-rect) (.-width old-screen-rect))
           y-ratio (/ (.-height new-screen-rect) (.-height old-screen-rect))]
       (.setFrame window #js {:width (round (* x-ratio (.-width window-frame)))
