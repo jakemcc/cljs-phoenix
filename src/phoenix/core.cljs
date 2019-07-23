@@ -141,8 +141,8 @@
    (bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
    (bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
 
-   (bind "left" ["alt" "cmd"] to-left-half)
-   (bind "right" ["alt" "cmd"] to-right-half)
+   (bind "left" ["ctrl" "alt" "shift"] to-left-half)
+   (bind "right" ["ctrl" "alt" "shift"] to-right-half)
    (bind "f" ["alt" "cmd"] to-fullscreen)
    (bind "down" ["alt" "cmd"] to-middle)
 
