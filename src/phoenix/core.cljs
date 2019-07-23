@@ -147,6 +147,7 @@
    (bind "down" ["alt" "cmd"] to-middle)
 
    (switch-app "c" "iTerm")
+   (switch-app "i" "IntelliJ IDEA")
    (switch-app "e" "Emacs")
    (switch-app "b" "Google Chrome")
    (switch-app "m" "Slack")
