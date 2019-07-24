@@ -130,8 +130,13 @@
                               (when (= @last-recently-launched-app (.name app))
                                 (.focus app)
                                 (reset! last-recently-launched-app nil)))))
+
+;; Special key on ergodox ez hits all these buttons at once. Use this
+;; to not conflict with most other shortcuts.
+(def meh-combo ["ctrl" "alt" "shift"])
+
 (defn switch-app [key title]
-  (bind key ["cmd" "ctrl"] (partial focus-or-start title)))
+  (bind key meh-combo (partial focus-or-start title)))
 
 ;; Per Phoenix docs, need to capture results of
 ;; Phoenix.bind to GC doesn't clean them up.
@@ -141,8 +146,8 @@
    (bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
    (bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
 
-   (bind "left" ["ctrl" "alt" "shift"] to-left-half)
-   (bind "right" ["ctrl" "alt" "shift"] to-right-half)
+   (bind "left" meh-combo to-left-half)
+   (bind "right" meh-combo to-right-half)
    (bind "f" ["alt" "cmd"] to-fullscreen)
    (bind "down" ["alt" "cmd"] to-middle)
 
