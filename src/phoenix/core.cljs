@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]))
 
 (defn bind [key modifiers callback]
-  (js/Key. key (clj->js modifiers) callback))
+  (.on js/Key key (clj->js modifiers) callback))
 
 (defn log [& xs]
   (.log js/Phoenix (string/join " " xs)))
@@ -128,22 +128,19 @@
 (defn switch-app [key title]
   (bind key meh-combo (partial focus-or-start title)))
 
-;; Per Phoenix docs, need to capture results of
-;; Phoenix.bind to GC doesn't clean them up.
-(def ^:export bound-keys
-  [(bind "h" ["alt" "cmd" "ctrl"] debug)
+(bind "h" ["alt" "cmd" "ctrl"] debug)
 
-   (bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
-   (bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
+(bind "left" ["alt" "cmd" "ctrl"] left-one-monitor)
+(bind "right" ["alt" "cmd" "ctrl"] right-one-monitor)
 
-   (bind "left" meh-combo to-left-half)
-   (bind "right" meh-combo to-right-half)
-   (bind "f" ["alt" "cmd"] to-fullscreen)
-   (bind "down" ["alt" "cmd"] to-middle)
+(bind "left" meh-combo to-left-half)
+(bind "right" meh-combo to-right-half)
+(bind "f" ["alt" "cmd"] to-fullscreen)
+(bind "down" ["alt" "cmd"] to-middle)
 
-   (switch-app "c" "iTerm")
-   (switch-app "i" "IntelliJ IDEA")
-   (switch-app "e" "Emacs")
-   (switch-app "b" "Google Chrome")
-   (switch-app "m" "Slack")
-   (switch-app "k" "KeePassX")])
+(switch-app "c" "iTerm")
+(switch-app "i" "IntelliJ IDEA")
+(switch-app "e" "Emacs")
+(switch-app "b" "Google Chrome")
+(switch-app "m" "Slack")
+(switch-app "k" "KeePassX")
