@@ -1,14 +1,14 @@
 var Phoenix = function() {}
 // static
 Phoenix.reload = function() {}
-Phoenix.bind = function(key, modifiers, callback) {}
-Phoenix.on = function(event, callback) {}
+Phoenix.set = function(preferences) {}
 Phoenix.log = function(message) {}
 Phoenix.notify = function(message) {}
 
 var App = function() {}
 //static
-App.launch = function(appName) {}
+App.get = function(appName) {}
+App.launch = function(appName, optionals) {}
 App.focused = function() {}
 App.all = function() {}
 
@@ -19,21 +19,30 @@ App.isActive = function() {}
 App.isHidden = function() {}
 App.isTerminated = function() {}
 App.mainWindow = function() {}
-App.windows = function() {}
+App.windows = function(optionals) {}
 App.activate = function() {}
 App.focus = function() {}
 App.show = function() {}
 App.hide = function() {}
-App.terminate = function() {}
+App.terminate = function(optionals) {}
 
 var Window = function() {}
 // static
-Window.all = function() {}
 Window.focused = function() {}
+Window.at = function(point) {}
+Window.all = function(optionals) {}
 Window.recent = function() {}
-Window.others = function() {}
 
 // Members
+Window.others = function(optional) {}
+Window.title = function() {}
+Window.isMain = function() {}
+Window.isNormal = function() {}
+Window.isFullScreen = function() {}
+Window.isMinimised = function() {}
+Window.isMinimized = function() {}
+Window.isVisible = function() {}
+
 Window.frame = function() {}
 Window.topLeft = function() {}
 Window.size = function() {}
@@ -52,8 +61,7 @@ Window.isNormal = function() {}
 Window.focus = function() {}
 Window.focusClosestNeighbor = function() {}
 Window.neighbors = function() {}
-Window.title = function() {}
-Window.isMinimized = function() {}
+
 
 
 var Screen = function() {}
@@ -76,3 +84,4 @@ Model.show = function() {}
 Model.close = function() {}
 
 var Key = function() {}
+Key.on = function(key, modifiers, callback) {}
