@@ -105,8 +105,6 @@
     (when-not (= (.screen window) (.previous (.screen window)))
       (move-to-screen window (.previous (.screen window))))))
 
-(def last-recently-launched-app (atom nil))
-
 ;; Idea:
 ;;   search visible windows first, then do minimized windows
 ;; Below no longer cycles through all the windows. Previous
@@ -121,15 +119,7 @@
         (if (empty? windows)
           (notify (str "All windows minimized for " title))
           (.focus (first windows)))))
-    (when-let [app (.launch js/App title)]
-      (reset! last-recently-launched-app title)
-      (.focus app))))
-
-(def ^:export app-did-launch
-  (js/Event. "appDidLaunch" (fn [app]
-                              (when (= @last-recently-launched-app (.name app))
-                                (.focus app)
-                                (reset! last-recently-launched-app nil)))))
+    (.launch js/App title #js {:focus true})))
 
 ;; Special key on ergodox ez hits all these buttons at once. Use this
 ;; to not conflict with most other shortcuts.
