@@ -135,8 +135,8 @@
 
 (bind "left" meh-combo to-left-half)
 (bind "right" meh-combo to-right-half)
-(bind "f" ["alt" "cmd"] to-fullscreen)
-(bind "down" ["alt" "cmd"] to-middle)
+(bind "f" meh-combo to-fullscreen)
+(bind "down" meh-combo to-middle)
 
 (switch-app "c" "iTerm")
 (switch-app "i" "IntelliJ IDEA")
