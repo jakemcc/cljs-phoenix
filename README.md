@@ -41,3 +41,5 @@ file.
 ClojureScript file changes. It is recommended to symlink
 `~/.phoenix.js` to this project's `out/main.js` in order to have
 Phoenix pick up configuration changes and new builds finish.
+
+` rm ~/.phoenix.js; ln -s $(pwd)/out/main.js ~/.phoenix.js`
