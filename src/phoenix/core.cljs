@@ -87,10 +87,12 @@
 (defn to-right-half []
   (when-let [window (.focused js/Window)]
     (let [screen-frame (.flippedVisibleFrame (.screen window))
-          width-adjustment (next-width-adjustment window screen-frame)]
-      (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
+          width-adjustment (next-width-adjustment window screen-frame)
+          next-width (half-screen-width width-adjustment window screen-frame)]
+      (.setFrame window #js {:x (+ (.-x screen-frame) (- (.-width screen-frame)
+                                                         next-width))
                              :y (.-y screen-frame)
-                             :width (half-screen-width window screen-frame)
+                             :width next-width
                              :height (.-height screen-frame)}))))
 
 (defn to-middle []
