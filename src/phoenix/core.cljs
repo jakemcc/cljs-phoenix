@@ -43,22 +43,51 @@
           [(.name app) screen-width]
           0))
 
+(def screen-width-adjustments [0.5 (/ 1 3.0) (/ 2 3.0)])
+
+(defn abs [x]
+  (if (< x 0)
+    (- x)
+    x))
+
+(defn shift [xs]
+  (take (count xs)
+        (rest (cycle xs))))
+
+(defn next-width-adjustment [window screen-frame]
+  (let [window-width (.-width (.size window))
+        screen-width (.-width screen-frame)
+        current-adjustment (ffirst (sort-by second (for [adjustment screen-width-adjustments
+                                                        :let [width (* adjustment screen-width)
+                                                              diff-from-window (abs (- width window-width))]]
+                                                    [adjustment diff-from-window])))
+        curr->next-adjustment (zipmap screen-width-adjustments
+                                      (shift screen-width-adjustments))]
+    (dbg curr->next-adjustment)
+    (dbg current-adjustment)
+    (curr->next-adjustment current-adjustment)))
+
 (defn half-screen-width
-  [window screen-frame]
-  (+ (* 0.5 (.-width screen-frame))
-     (app-width-adjustment (.app window) (.-width screen-frame))))
+  ([window screen-frame]
+   (half-screen-width 0.50 window screen-frame))
+  ([width-adjustment window screen-frame]
+   (+ (* width-adjustment (.-width screen-frame))
+      (app-width-adjustment (.app window) (.-width screen-frame)))))
+
 
 (defn to-left-half []
   (when-let [window (.focused js/Window)]
-    (let [screen-frame (.flippedVisibleFrame (.screen window))]
+    (let [screen-frame (.flippedVisibleFrame (.screen window))
+          width-adjustment (next-width-adjustment window screen-frame)]
       (.setFrame window #js {:x (.-x screen-frame)
                              :y (.-y screen-frame)
-                             :width (half-screen-width window screen-frame)
+                             :width (half-screen-width width-adjustment window screen-frame)
                              :height (.-height screen-frame)}))))
 
 (defn to-right-half []
   (when-let [window (.focused js/Window)]
-    (let [screen-frame (.flippedVisibleFrame (.screen window))]
+    (let [screen-frame (.flippedVisibleFrame (.screen window))
+          width-adjustment (next-width-adjustment window screen-frame)]
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.5 (.-width screen-frame)))
                              :y (.-y screen-frame)
                              :width (half-screen-width window screen-frame)
