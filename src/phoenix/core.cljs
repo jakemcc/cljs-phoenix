@@ -63,32 +63,43 @@
                                                     [adjustment diff-from-window])))
         curr->next-adjustment (zipmap screen-width-adjustments
                                       (shift screen-width-adjustments))]
-    (dbg curr->next-adjustment)
-    (dbg current-adjustment)
     (curr->next-adjustment current-adjustment)))
 
-(defn half-screen-width
-  ([window screen-frame]
-   (half-screen-width 0.50 window screen-frame))
-  ([width-adjustment window screen-frame]
-   (+ (* width-adjustment (.-width screen-frame))
-      (app-width-adjustment (.app window) (.-width screen-frame)))))
+(defn calc-screen-width
+  [width-adjustment window screen-frame]
+  (+ (* width-adjustment (.-width screen-frame))
+     (app-width-adjustment (.app window) (.-width screen-frame))))
 
+(defn on-left-half? [window screen-frame]
+  (= (.-x (.topLeft window))
+     (.-x screen-frame)))
+
+(defn at-middle? [window screen-frame]
+  (= (.-x (.topLeft window))
+     (* 0.25 (.-width screen-frame))))
+
+(defn on-right-half? [window screen-frame]
+  (and (not (on-left-half? window screen-frame))
+       (not (at-middle? window screen-frame))))
 
 (defn to-left-half []
   (when-let [window (.focused js/Window)]
     (let [screen-frame (.flippedVisibleFrame (.screen window))
-          width-adjustment (next-width-adjustment window screen-frame)]
+          width-adjustment (if (on-left-half? window screen-frame)
+                             (next-width-adjustment window screen-frame)
+                             (first screen-width-adjustments))]
       (.setFrame window #js {:x (.-x screen-frame)
                              :y (.-y screen-frame)
-                             :width (half-screen-width width-adjustment window screen-frame)
+                             :width (calc-screen-width width-adjustment window screen-frame)
                              :height (.-height screen-frame)}))))
 
 (defn to-right-half []
   (when-let [window (.focused js/Window)]
     (let [screen-frame (.flippedVisibleFrame (.screen window))
-          width-adjustment (next-width-adjustment window screen-frame)
-          next-width (half-screen-width width-adjustment window screen-frame)]
+          width-adjustment (if (on-right-half? window screen-frame)
+                             (next-width-adjustment window screen-frame)
+                             (first screen-width-adjustments))
+          next-width (calc-screen-width width-adjustment window screen-frame)]
       (.setFrame window #js {:x (+ (.-x screen-frame) (- (.-width screen-frame)
                                                          next-width))
                              :y (.-y screen-frame)
@@ -100,7 +111,7 @@
     (let [screen-frame (.flippedVisibleFrame (.screen window))]
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.25 (.-width screen-frame)))
                              :y (.-y screen-frame)
-                             :width (half-screen-width window screen-frame)
+                             :width (calc-screen-width 0.50 window screen-frame)
                              :height (.-height screen-frame)}))))
 
 (defn to-fullscreen []
