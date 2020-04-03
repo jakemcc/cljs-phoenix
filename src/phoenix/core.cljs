@@ -79,8 +79,10 @@
      (* 0.25 (.-width screen-frame))))
 
 (defn on-right-half? [window screen-frame]
-  (and (not (on-left-half? window screen-frame))
-       (not (at-middle? window screen-frame))))
+  (< (abs (- (.-width screen-frame)
+             (+ (.-width (.size window))
+                (.-x (.topLeft window)))))
+     20))
 
 (defn to-left-half []
   (when-let [window (.focused js/Window)]
