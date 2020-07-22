@@ -186,5 +186,6 @@
 (switch-app "i" "IntelliJ IDEA")
 (switch-app "e" "Emacs")
 (switch-app "b" "Google Chrome")
+(switch-app "v" "Brave Browser")
 (switch-app "m" "Slack")
 (switch-app "k" "KeePassX")
