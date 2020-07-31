@@ -156,13 +156,11 @@
 ;;   focused. Now it just focuses on first one returned.
 (defn focus-or-start [title]
   (if-let [app (.get js/App title)]
-    (do
-      ;; TODO: could probably switch this to visible windows?
-      (let [windows (->> (.windows app)
-                         (remove #(= 1 (.isMinimized %))))]
-        (if (empty? windows)
-          (notify (str "All windows minimized for " title))
-          (.focus (first windows)))))
+    (let [windows (->> (.windows app) ;; TODO: could probably switch this to visible windows?
+                       (remove #(= 1 (.isMinimized %))))]
+      (if (empty? windows)
+        (notify (str "All windows minimized for " title))
+        (.focus (first windows))))
     (.launch js/App title #js {:focus true})))
 
 ;; Special key on ergodox ez hits all these buttons at once. Use this
