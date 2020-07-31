@@ -187,3 +187,4 @@
 (switch-app "v" "Brave Browser")
 (switch-app "m" "Slack")
 (switch-app "k" "KeePassX")
+(switch-app "s" "Code")
