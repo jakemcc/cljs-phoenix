@@ -158,8 +158,7 @@
   (if-let [app (.get js/App title)]
     (let [windows (->> (.windows app) ;; TODO: could probably switch this to visible windows?
                        (remove #(= 1 (.isMinimized %))))]
-      (if (empty? windows)
-        (notify (str "All windows minimized for " title))
+      (when-not (empty? windows)
         (.focus (first windows))))
     (.launch js/App title #js {:focus true})))
 
