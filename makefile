@@ -9,6 +9,9 @@ watch: cljs-watch
 
 release: clean cljs-release
 
+install: release
+	cp out/main.js ~/.phoenix.js
+
 clean:
 	rm -rf out
 
