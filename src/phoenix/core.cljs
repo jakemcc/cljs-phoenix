@@ -181,6 +181,7 @@
 
 (switch-app "c" "iTerm")
 (switch-app "i" "IntelliJ IDEA")
+(switch-app "p" "projector")
 (switch-app "e" "Emacs")
 (switch-app "b" "Google Chrome")
 (switch-app "v" "Brave Browser")
