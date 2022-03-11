@@ -3,3 +3,5 @@ out
 .repl-1.7.170
 *.js
 node_modules
+.lsp
+.clj-kondo
