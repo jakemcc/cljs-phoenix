@@ -84,6 +84,11 @@
                 (.-x (.topLeft window)))))
      20))
 
+;; TODO: maybe make this vary based on if Zoom is actively doing
+;; things, only really want to adjust height if screen sharing
+(defn adjust-height [height]
+  (- height 5))
+
 (defn to-left-half []
   (when-let [window (.focused js/Window)]
     (let [screen-frame (.flippedVisibleFrame (.screen window))
@@ -93,7 +98,7 @@
       (.setFrame window #js {:x (.-x screen-frame)
                              :y (.-y screen-frame)
                              :width (calc-screen-width width-adjustment window screen-frame)
-                             :height (.-height screen-frame)}))))
+                             :height (adjust-height (.-height screen-frame))}))))
 
 (defn to-right-half []
   (when-let [window (.focused js/Window)]
@@ -106,7 +111,7 @@
                                                          next-width))
                              :y (.-y screen-frame)
                              :width next-width
-                             :height (.-height screen-frame)}))))
+                             :height (adjust-height (.-height screen-frame))}))))
 
 (defn to-middle []
   (when-let [window (.focused js/Window)]
@@ -114,7 +119,7 @@
       (.setFrame window #js {:x (+ (.-x screen-frame) (* 0.25 (.-width screen-frame)))
                              :y (.-y screen-frame)
                              :width (calc-screen-width 0.50 window screen-frame)
-                             :height (.-height screen-frame)}))))
+                             :height (adjust-height (.-height screen-frame))}))))
 
 (defn to-fullscreen []
   (when-let [window (.focused js/Window)]
