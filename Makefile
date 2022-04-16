@@ -16,7 +16,7 @@ clean:
 	rm -rf out
 
 cljs.jar:
-	curl -L https://github.com/clojure/clojurescript/releases/download/r1.10.866/cljs.jar > cljs.jar
+	curl -L https://github.com/clojure/clojurescript/releases/download/r1.11.4/cljs.jar > cljs.jar
 	touch cljs.jar
 
 
