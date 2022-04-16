@@ -158,12 +158,11 @@
 
 ;; Idea:
 ;;   search visible windows first, then do minimized windows
-;; Below no longer cycles through all the windows. Previous
-;;   implementation focused on every window and stayed on last
-;;   focused. Now it just focuses on first one returned.
+;; Below tries to cycle through all the windows. This fails
+;; for some apps, specifically iTerm2
 (defn focus-or-start [title]
   (if-let [app (.get js/App title)]
-    (let [current-window-hash (.hash (.focused js/Window))
+    (let [current-window-hash (some-> (.focused js/Window) (.hash))
           windows (.windows app #js {:visible true})]
       (when-let [other-windows (seq (filter (fn [w] (not= current-window-hash (.hash w)))
                                             windows))]
