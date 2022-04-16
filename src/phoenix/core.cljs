@@ -163,10 +163,11 @@
 ;;   focused. Now it just focuses on first one returned.
 (defn focus-or-start [title]
   (if-let [app (.get js/App title)]
-    (let [windows (->> (.windows app) ;; TODO: could probably switch this to visible windows?
-                       (remove #(= 1 (.isMinimized %))))]
-      (when-not (empty? windows)
-        (.focus (first windows))))
+    (let [current-window-hash (.hash (.focused js/Window))
+          windows (.windows app #js {:visible true})]
+      (when-let [other-windows (seq (filter (fn [w] (not= current-window-hash (.hash w)))
+                                            windows))]
+        (.focus (first other-windows))))
     (.launch js/App title #js {:focus true})))
 
 ;; Special key on ergodox ez hits all these buttons at once. Use this
