@@ -20,8 +20,10 @@
 
 (defn debug []
   (log "debug")
-  (log-rectangle "Screen's visible frame" (.flippedVisibleFrame (.screen (.focused js/Window))))
-  (log-rectangle "App's frame" (.frame (.focused js/Window))))
+  (let [focused (.focused js/Window)]
+    (log-rectangle "Screen's visible frame" (.flippedVisibleFrame (.screen focused)))
+    (log-rectangle "App's frame" (.frame focused))
+    (log (.hash focused))))
 
 (defn dbg [x]
   (log x)
