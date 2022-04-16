@@ -191,6 +191,5 @@
 (switch-app "v" "Brave Browser")
 (switch-app "m" "Slack")
 (switch-app "k" "KeePassX")
-(switch-app "s" "Code")
 (switch-app "z" "zoom.us")
 (switch-app "o" "Microsoft Outlook")
