@@ -27,7 +27,7 @@ ClojureScript's advanced compilation mode.
 
 ## Requirements
 
-- Java 8 is installed on your machine.
+- Java 8+ is installed on your machine.
 - You're using Phoenix 2.2+.
 
 ## Building
@@ -42,4 +42,4 @@ ClojureScript file changes. It is recommended to symlink
 `~/.phoenix.js` to this project's `out/main.js` in order to have
 Phoenix pick up configuration changes and new builds finish.
 
-` rm ~/.phoenix.js; ln -s $(pwd)/out/main.js ~/.phoenix.js`
+`rm ~/.phoenix.js; ln -s $(pwd)/out/main.js ~/.phoenix.js`
