@@ -192,6 +192,6 @@
 (switch-app "b" "Google Chrome")
 (switch-app "v" "Brave Browser")
 (switch-app "m" "Slack")
-(switch-app "k" "KeePassX")
+(switch-app "k" "KeePassXC")
 (switch-app "z" "zoom.us")
 (switch-app "o" "Microsoft Outlook")
