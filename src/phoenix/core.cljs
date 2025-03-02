@@ -233,9 +233,11 @@
 
 (switch-app "c" "iTerm")
 (switch-app "i" "IntelliJ IDEA")
+(switch-app "q" "Cursor")
 (switch-app "l" "CLion")
 (switch-app "e" "Emacs")
 (switch-app "b" "Google Chrome")
+(switch-app "x" "Firefox")
 (switch-app "v" "Brave Browser")
 (switch-app "m" "Slack")
 (switch-app "k" "KeePassXC")
